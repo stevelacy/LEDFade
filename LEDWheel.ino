@@ -18,12 +18,7 @@ void loop() {
         pixels.setPixelColor(i+q, Wheel( (i+j) % 255));
       }
       pixels.show();
-
       delay(DELAY);
-
-      for (int i=0; i < pixels.numPixels(); i=i+3) {
-        pixels.setPixelColor(i+q, 0);
-      }
     }
   }
 }
