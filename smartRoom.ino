@@ -2,7 +2,7 @@
 #include <avr/power.h>
 
 #define PIN     3
-#define LEDNUM  7
+#define LEDNUM  3
 #define DELAY   50
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(LEDNUM, PIN, NEO_GRB + NEO_KHZ800);
@@ -26,7 +26,7 @@ void loop() {
       strip.setPixelColor(l, strip.Color(i,i,0));
     }
     strip.show();
-    delay(10);
+    delay(50);
     if (i == 255) {
       full = 1;
     }
