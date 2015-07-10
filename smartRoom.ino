@@ -2,7 +2,7 @@
 #include <avr/power.h>
 
 #define PIN     3
-#define LEDNUM  3
+#define LEDNUM  187
 #define DELAY   50
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(LEDNUM, PIN, NEO_GRB + NEO_KHZ800);
