@@ -2,7 +2,7 @@
 #include <avr/power.h>
 
 #define PIN     3
-#define LEDNUM  187
+#define LEDNUM  183
 #define DELAY   50
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(LEDNUM, PIN, NEO_GRB + NEO_KHZ800);
@@ -16,19 +16,27 @@ void setup() {
 }
 
 void loop() {
-  //buttonState = digitalRead(buttonPin);
+  setStrip(50, 100, 200);
+  delay(50);
+}
 
-  for (int i = 0; i <= 255; i++) {
-    if (full == 1) {
-      return;
-    }
+void setStrip (int r, int g, int b) {
+  if (full == 1) {
+    return;
+  }
+
+  for (int i = 0; i <=255; i++) {
+    strip.setBrightness(i);
+
     for (int l=0; l < strip.numPixels(); l++) {
-      strip.setPixelColor(l, strip.Color(i,i,0));
+      strip.setPixelColor(l, strip.Color(r, g, b));
     }
+
     strip.show();
-    delay(50);
+
     if (i == 255) {
       full = 1;
     }
   }
+
 }
