@@ -14,6 +14,9 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(LEDNUM, PIN, NEO_GRB + NEO_KHZ800);
 YunServer server;
 
 int full = 0;
+int red = 0;
+int green = 0;
+int blue = 0;
 
 void setup() {
   Serial.begin(9600);
@@ -46,9 +49,6 @@ void process(YunClient request) {
 }
 
 void ledCommand(YunClient request) {
-  int red = 0;
-  int green = 0;
-  int blue = 0;
 
   // Read rgb numbers
   red = request.parseInt();
@@ -61,6 +61,7 @@ void ledCommand(YunClient request) {
 
 
   full = 0;
+  fadeOut();
   setStrip(red, green, blue);
 
   // Return request
@@ -87,9 +88,18 @@ void setStrip (int r, int g, int b) {
     }
 
     strip.show();
+    delay(10);
 
     if (i == 255) {
       full = 1;
     }
+  }
+}
+
+void fadeOut () {
+  for (int i = 255; i >=0; --i) {
+    strip.setBrightness(i);
+    strip.show();
+    delay(5);
   }
 }
