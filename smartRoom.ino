@@ -8,10 +8,15 @@
 #include <avr/power.h>
 
 #define PIN     3
-#define LEDNUM  177
+#define LEDNUM  183
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(LEDNUM, PIN, NEO_GRB + NEO_KHZ800);
 YunServer server;
+
+int full = 0;
+int red = 0;
+int green = 0;
+int blue = 0;
 
 void setup() {
   Serial.begin(9600);
@@ -30,13 +35,12 @@ void loop() {
     request.stop();
   }
 
-  delay(200); // Poll requests
+  delay(50); // Poll requests
 }
 
 void process(YunClient request) {
   String command = request.readStringUntil('/');
 
-  // http://<ip>/arduino/led/<red>/<green>/<blue>
   // /arduino/led/
   if (command == "led") {
     ledCommand(request);
@@ -45,33 +49,57 @@ void process(YunClient request) {
 }
 
 void ledCommand(YunClient request) {
-  int r = 0;
-  int g = 0;
-  int b = 0;
 
   // Read rgb numbers
-  r = request.parseInt();
+  red = request.parseInt();
   if (request.read() == '/') {
-    g = request.parseInt();
+    green = request.parseInt();
     if (request.read() == '/') {
-      b = request.parseInt();
+      blue = request.parseInt();
     }
   }
 
-  setStrip(r, g, b);
+
+  full = 0;
+  fadeOut();
+  setStrip(red, green, blue);
 
   // Return request
   request.print(F("red: "));
-  request.print(r);
+  request.print(red);
   request.print(F(" green: "));
-  request.print(g);
+  request.print(green);
   request.print(F(" blue: "));
-  request.print(b);
-  return;
+  request.print(blue);
 }
+
+
+// Set LED strip colors
 void setStrip (int r, int g, int b) {
-  for (int l=0; l < strip.numPixels(); l++) {
-    strip.setPixelColor(l, strip.Color(r, g, b));
+  if (full == 1) {
+    return;
+  }
+
+  for (int i = 0; i <=255; i++) {
+    strip.setBrightness(i);
+
+    for (int l=0; l < strip.numPixels(); l++) {
+      strip.setPixelColor(l, strip.Color(r, g, b));
+    }
+
     strip.show();
+    delay(10);
+
+    if (i == 255) {
+      full = 1;
+    }
+  }
+}
+
+void fadeOut () {
+  for (int i = 255; i >=0; --i) {
+    strip.setBrightness(i);
+    strip.show();
+    delay(5);
   }
 }
