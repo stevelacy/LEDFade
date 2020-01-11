@@ -1,2 +1,2 @@
-# LEDWheel
-Yun LED wheel
+# Mellow
+> the arduino code
