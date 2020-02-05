@@ -9,7 +9,7 @@
 
 #define PIN     3
 // #define LEDNUM  183
-#define LEDNUM  72
+#define LEDNUM  178
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(LEDNUM, PIN, NEO_GRB + NEO_KHZ800);
 YunServer server;
@@ -118,7 +118,7 @@ void setStrip (int r, int g, int b) {
 // Slightly different, this makes the rainbow equally distributed throughout
 void rainbowCycle(uint8_t wait) {
 	uint16_t i, j;
-	strip.setBrightness(80); // adjust brightness here
+	strip.setBrightness(255); // adjust brightness here
 
 	for(j=0; j<256*5; j++) { // 5 cycles of all colors on wheel
 		for(i=0; i< strip.numPixels(); i++) {
